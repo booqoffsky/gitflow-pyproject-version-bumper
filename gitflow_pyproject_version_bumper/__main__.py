@@ -1,5 +1,4 @@
 import argparse
-import os
 import pathlib
 import shutil
 import stat
@@ -11,8 +10,8 @@ import git
 def install(*args, **kwargs):
     """Install git post-checkout hook."""
     repo = git.Repo()
-    src = pathlib.Path(os.path.dirname(__file__)).joinpath("post_checkout.py")
-    dst = pathlib.Path(repo.git_dir).joinpath("hooks").joinpath("post-checkout")
+    src = pathlib.Path(__file__).parent / "post_checkout.py"
+    dst = pathlib.Path(repo.git_dir) / "hooks" / "post-checkout"
     shutil.copyfile(src, dst)
     dst.chmod(dst.stat().st_mode | stat.S_IEXEC)
 
