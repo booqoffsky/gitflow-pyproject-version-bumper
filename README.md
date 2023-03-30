@@ -10,7 +10,7 @@ From PyPi:
 
 ```
 pip3 install gitflow-pyproject-version-bumper
-python3 -m gitflow-pyproject-version-bumper install
+python3 -m gitflow_pyproject_version_bumper install
 ```
 
 If you want to install it from sources, try this:
