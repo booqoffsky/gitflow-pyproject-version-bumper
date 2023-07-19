@@ -6,7 +6,7 @@ import stat
 import git
 
 
-def install(force: bool) -> None:
+def install(force: bool, commit_message_template: str) -> None:
     """
     Install git post-checkout hook.
 
@@ -22,6 +22,17 @@ def install(force: bool) -> None:
             "To overwrite it, use the --force option.",
         )
         exit(-1)
+
+    version_bumper_section_name = "versionbumper"
+    with repo.config_writer() as git_config:
+        if not git_config.has_section(version_bumper_section_name):
+            git_config.add_section(version_bumper_section_name)
+
+        git_config.set(
+            section=version_bumper_section_name,
+            option="commitmessagetemplate",
+            value=commit_message_template,
+        )
 
     shutil.copyfile(src, dst)
     dst.chmod(dst.stat().st_mode | stat.S_IEXEC)
@@ -55,6 +66,14 @@ def main() -> None:
         default=False,
         help="overwrite hook if it exists",
     )
+    install_cmd_parser.add_argument(
+        "--commit-message-template",
+        dest="commit_message_template",
+        action="store",
+        default="Version bumped to {version}",
+        help="commit message when updating the version. "
+        "Default: Version bumped to {version}",
+    )
     args, _ = parser.parse_known_args()
 
     if args.subcommand is None:
@@ -62,7 +81,7 @@ def main() -> None:
         return
 
     if args.subcommand == "install":
-        install(args.force_install)
+        install(args.force_install, args.commit_message_template)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gitflow-pyproject-version-bumper"
-version = "0.1.3"
+version = "0.1.4"
 description = "Automatic pyproject.toml based app version bumper"
 authors = ["Grigory Bukovsky <booqoffsky@yandex.ru>"]
 readme = "README.md"
