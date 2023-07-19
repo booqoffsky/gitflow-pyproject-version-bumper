@@ -21,6 +21,15 @@ python3 -m pip install .
 python3 -m gitflow_pyproject_version_bumper install
 ```
 
+Install options:
+```
+  --force               overwrite hook if it exists
+  --commit-message-template COMMIT_MESSAGE_TEMPLATE
+                        commit message when updating the version. 
+                        Default: Version bumped to {version}
+```
+`{version}` - placeholder for the new version.
+
 # Usage
 Just start a release, as you usually do:
 `git flow release start 1.2.3`

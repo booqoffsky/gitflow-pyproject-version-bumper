@@ -7,7 +7,7 @@ import tomlkit
 
 BRANCH_CHECKOUT_TYPE = "1"
 
-_, _, _, checkout_type = sys.argv
+checkout_type = sys.argv[-1]
 if checkout_type != BRANCH_CHECKOUT_TYPE:
     exit()
 
@@ -29,6 +29,11 @@ with repo.config_reader() as git_config:
         option="hotfix",
         fallback="hotfix/",
     )
+    commit_message_template = git_config.get(
+        section="versionbumper",
+        option="commitmessagetemplate",
+        fallback="Version bumped to {version}",
+    )
 
 if head.name.startswith(gitflow_release_prefix):
     new_version = repo.active_branch.name[len(gitflow_release_prefix) :]
@@ -48,5 +53,4 @@ with open(pyproject_toml_path, "w") as f:
     tomlkit.dump(pyproject, f)
 
 repo.index.add(str(pyproject_toml_path))
-commit_message = f"Version bumped to {new_version}"
-repo.index.commit(commit_message)
+repo.index.commit(commit_message_template.format(version=new_version))
